@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Fonts style mapping ... text has to same as font file name without extension
+    eg. if fontFilename is fa-light.ttf then string is fa-light
+    NOTE: DO NOT add extension in text here, it is taken care FONTMANAGER class
+  -->
+    <string name="fa_light">fa-light</string>
+    <string name="fa_regular">fa-regular</string>
+    <string name="fa_solid">fa-solid</string>
+    <string name="roboto_light">roboto-light</string>
+    <string name="roboto_thin">roboto-thin</string>
+    <string name="roboto_regular">roboto-regular</string>
+
+
+</resources>

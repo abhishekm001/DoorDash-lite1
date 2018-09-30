@@ -1,4 +1,4 @@
-package com.doordash.lite;
+package com.doordash.lite.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -7,12 +7,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.doordash.adapters.RestaurantRecyclerViewAdapter;
 import com.doordash.customviews.MyDividerItemDecoration;
 import com.doordash.databeans.Restaurant;
+import com.doordash.lite.R;
+import com.doordash.lite.fragments.RetainedFragment;
 import com.doordash.services.DoorDashRetroClient;
+import com.doordash.utils.CommonUtils;
 
+import java.io.Serializable;
 import java.util.List;
 
 import rx.Observer;
@@ -27,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private Subscription subscription;
     private RecyclerView recyclerView;
     private RestaurantRecyclerViewAdapter restaurantRecyclerViewAdapter;
+    private List<Restaurant> restaurantList;
+    private View noRestaurantFound;
 
 
     @Override
@@ -39,7 +46,19 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.restaurant_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
 
-        searchRestaurants();
+        noRestaurantFound = findViewById(R.id.no_restaurant_found);
+
+        savedInstanceState = RetainedFragment.getInstance(this.getSupportFragmentManager()).popData();
+
+        if (savedInstanceState != null) {
+
+            if (savedInstanceState.containsKey("restaurant_list")) {
+                restaurantList = (List<Restaurant>) savedInstanceState.get("restaurant_list");
+                populateRecyclerView();
+            }
+        } else {
+            searchRestaurants();
+        }
     }
 
     private void searchRestaurants() {
@@ -62,6 +81,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         Log.i(TAG, "error");
+                        if (restaurantList != null) {
+                            restaurantList.clear();
+                        }
+                        checkRestaurantListEmpty();
 
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();
@@ -72,20 +95,52 @@ public class MainActivity extends AppCompatActivity {
                     public void onNext(List<Restaurant> restaurants) {
                         Log.i(TAG, "success: " + restaurants.size());
 
-                        if (restaurantRecyclerViewAdapter == null) {
-                            restaurantRecyclerViewAdapter = new RestaurantRecyclerViewAdapter(restaurants);
-                            recyclerView.setAdapter(restaurantRecyclerViewAdapter);
-                            MyDividerItemDecoration myDividerItemDecoration = new MyDividerItemDecoration(getBaseContext().getResources().getDrawable(R.drawable
-                                    .divider));
-                            recyclerView.addItemDecoration(myDividerItemDecoration);
+                        restaurantList = restaurants;
 
-                        } else {
-                            restaurantRecyclerViewAdapter.updateRestaurantList(restaurants);
-                        }
+                        checkRestaurantListEmpty();
+                        populateRecyclerView();
 
                     }
                 });
 
+    }
+
+    private void checkRestaurantListEmpty() {
+
+        if (CommonUtils.isNullOrEmpty(restaurantList)) {
+
+            recyclerView.setVisibility(View.GONE);
+            noRestaurantFound.setVisibility(View.VISIBLE);
+
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            noRestaurantFound.setVisibility(View.GONE);
+
+        }
+    }
+
+    private void populateRecyclerView() {
+
+        if (restaurantRecyclerViewAdapter == null) {
+            restaurantRecyclerViewAdapter = new RestaurantRecyclerViewAdapter(restaurantList);
+            recyclerView.setAdapter(restaurantRecyclerViewAdapter);
+            MyDividerItemDecoration myDividerItemDecoration = new MyDividerItemDecoration(getBaseContext().getResources().getDrawable(R.drawable
+                    .divider));
+            recyclerView.addItemDecoration(myDividerItemDecoration);
+
+        } else {
+            restaurantRecyclerViewAdapter.updateRestaurantList(restaurantList);
+        }
+
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("restaurant_list", (Serializable) restaurantList);
+        RetainedFragment.getInstance(this.getSupportFragmentManager()).pushData((Bundle) outState.clone(), false);
+        outState.clear();
     }
 
     @Override
