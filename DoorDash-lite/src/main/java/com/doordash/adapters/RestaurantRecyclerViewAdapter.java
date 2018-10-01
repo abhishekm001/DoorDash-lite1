@@ -13,12 +13,13 @@ import com.doordash.viewholders.RestuarantViewHolder;
 import java.util.List;
 
 /**
- * Created by amaheshwari on 9/29/2018.
+ * Recycler View adapter to bind view and data
+ *
+ *
  */
-
 public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-
+    // restaurant list
     private List<Restaurant> restaurantList;
 
     public RestaurantRecyclerViewAdapter(List<Restaurant> restaurantList) {
@@ -28,12 +29,17 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+
+        // inflates view for holder
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.restaurants_view, parent, false);
         return new RestuarantViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+        // bind data to holder
         ((RestuarantViewHolder) holder).bind(restaurantList.get(position));
     }
 
@@ -43,6 +49,11 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     }
 
 
+    /**
+     * Updates restaurant list and notifies adapter to re-evaluate
+     *
+     * @param newRestaurantList
+     */
     public void updateRestaurantList(List<Restaurant> newRestaurantList) {
 
         if (newRestaurantList == null) return;

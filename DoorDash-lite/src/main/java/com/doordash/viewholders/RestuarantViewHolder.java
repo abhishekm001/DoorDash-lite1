@@ -51,6 +51,8 @@ public class RestuarantViewHolder extends RecyclerView.ViewHolder {
             deiveryFee.setVisibility(View.GONE);
 
         }
+
+        // request options to fetch image from url
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.progress_loader);
         requestOptions.fallback(R.drawable.restaurant_image_error);

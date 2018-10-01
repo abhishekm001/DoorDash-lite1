@@ -5,6 +5,9 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+/**
+ * Class to customize divider line for recycler view
+ */
 public class MyDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
 

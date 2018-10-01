@@ -5,10 +5,6 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by amaheshwari on 9/29/2018.
- */
-
 public class Restaurant implements Parcelable {
 
     public Restaurant(int id, String name, String description, String coverImageUrl, String status, int deliveryFee) {

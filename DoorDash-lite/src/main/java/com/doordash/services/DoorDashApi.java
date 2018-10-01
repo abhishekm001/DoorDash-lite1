@@ -10,6 +10,9 @@ import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 import rx.Observable;
 
+/**
+ * Service Apis
+ */
 public interface DoorDashApi {
 
     // https://api.doordash.com/v2/restaurant/?lat=37.422740&lng=-122.139956

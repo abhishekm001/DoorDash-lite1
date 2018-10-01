@@ -48,8 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
         noRestaurantFound = findViewById(R.id.no_restaurant_found);
 
+        // Fetch state from dummy fragment which was set onSaveInstance
         savedInstanceState = RetainedFragment.getInstance(this.getSupportFragmentManager()).popData();
 
+        // retrieve data from save state instead of calling service
         if (savedInstanceState != null) {
 
             if (savedInstanceState.containsKey("restaurant_list")) {
@@ -57,10 +59,12 @@ public class MainActivity extends AppCompatActivity {
                 populateRecyclerView();
             }
         } else {
+            // call service to get restaurant list
             searchRestaurants();
         }
     }
 
+    // Service to fetch restaurant details
     private void searchRestaurants() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Searching..");
@@ -105,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // check if restaurant list is empty
+    // if empty dispplay not found message
     private void checkRestaurantListEmpty() {
 
         if (CommonUtils.isNullOrEmpty(restaurantList)) {
@@ -119,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // intialize recycler view adapter
     private void populateRecyclerView() {
 
         if (restaurantRecyclerViewAdapter == null) {
@@ -139,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("restaurant_list", (Serializable) restaurantList);
+
+        // Dummy fragment to save state
         RetainedFragment.getInstance(this.getSupportFragmentManager()).pushData((Bundle) outState.clone(), false);
         outState.clear();
     }
@@ -146,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        // Stops active service call
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }

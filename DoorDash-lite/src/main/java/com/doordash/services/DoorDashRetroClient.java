@@ -11,6 +11,9 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
+/**
+ * Client to initiate service call
+ */
 public class DoorDashRetroClient {
 
     private static final String TAG = "DoorDashRetroClient";
