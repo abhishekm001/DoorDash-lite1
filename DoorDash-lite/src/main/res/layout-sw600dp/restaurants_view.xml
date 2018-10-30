@@ -49,6 +49,14 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/like_unlike"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@drawable/like_unlike"
+            />
+
+
         <com.doordash.customviews.CustomTextView
             android:id="@+id/delivery_fee"
             android:layout_width="match_parent"

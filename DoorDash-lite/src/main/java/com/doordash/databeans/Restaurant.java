@@ -33,6 +33,9 @@ public class Restaurant implements Parcelable {
     @SerializedName("delivery_fee")
     private int deliveryFee;
 
+    // like/unlike
+    private boolean like;
+
     public int getId() {
         return id;
     }
@@ -81,6 +84,14 @@ public class Restaurant implements Parcelable {
         this.deliveryFee = deliveryFee;
     }
 
+    public boolean isLike() {
+        return like;
+    }
+
+    public void setLike(boolean like) {
+        this.like = like;
+    }
+
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public Restaurant createFromParcel(Parcel in) {
             return new Restaurant(in);
@@ -106,6 +117,11 @@ public class Restaurant implements Parcelable {
         dest.writeString(status);
         dest.writeInt(deliveryFee);
 
+        if (like) {
+            dest.writeInt(1);
+        } else
+            dest.writeInt(0);
+
     }
 
     private void readFromParcel(Parcel in) {
@@ -115,6 +131,11 @@ public class Restaurant implements Parcelable {
         coverImageUrl = in.readString();
         status = in.readString();
         deliveryFee = in.readInt();
+
+        if (in.readInt() == 1) {
+            like = true;
+        } else
+            like = false;
     }
 
 }

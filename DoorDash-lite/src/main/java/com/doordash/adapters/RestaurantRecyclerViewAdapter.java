@@ -1,5 +1,6 @@
 package com.doordash.adapters;
 
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,16 +15,16 @@ import java.util.List;
 
 /**
  * Recycler View adapter to bind view and data
- *
- *
  */
 public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     // restaurant list
     private List<Restaurant> restaurantList;
+    private SharedPreferences sharedPreferences;
 
-    public RestaurantRecyclerViewAdapter(List<Restaurant> restaurantList) {
+    public RestaurantRecyclerViewAdapter(List<Restaurant> restaurantList, SharedPreferences sharedPreferences) {
         this.restaurantList = restaurantList;
+        this.sharedPreferences = sharedPreferences;
     }
 
     @NonNull
@@ -40,7 +41,7 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         // bind data to holder
-        ((RestuarantViewHolder) holder).bind(restaurantList.get(position));
+        ((RestuarantViewHolder) holder).bind(restaurantList.get(position), this, position, sharedPreferences);
     }
 
     @Override

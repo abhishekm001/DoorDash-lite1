@@ -1,6 +1,7 @@
 package com.doordash.lite.activity;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -99,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onNext(List<Restaurant> restaurants) {
                         Log.i(TAG, "success: " + restaurants.size());
 
+
+                        // TODO: set like/unlike from shared preference
                         restaurantList = restaurants;
 
                         checkRestaurantListEmpty();
@@ -128,8 +131,13 @@ public class MainActivity extends AppCompatActivity {
     // intialize recycler view adapter
     private void populateRecyclerView() {
 
+
         if (restaurantRecyclerViewAdapter == null) {
-            restaurantRecyclerViewAdapter = new RestaurantRecyclerViewAdapter(restaurantList);
+
+            // shared preference to state of  restaurant like/unlike
+            SharedPreferences sharedPreferences = getSharedPreferences("like_unlike", MainActivity.MODE_PRIVATE);
+
+            restaurantRecyclerViewAdapter = new RestaurantRecyclerViewAdapter(restaurantList, sharedPreferences);
             recyclerView.setAdapter(restaurantRecyclerViewAdapter);
             MyDividerItemDecoration myDividerItemDecoration = new MyDividerItemDecoration(getBaseContext().getResources().getDrawable(R.drawable
                     .divider));

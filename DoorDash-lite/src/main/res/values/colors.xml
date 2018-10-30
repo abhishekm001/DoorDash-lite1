@@ -6,4 +6,7 @@
 
     <color name="dark_grey">#4D4D4D</color>
     <color name="grey">#CCCCCC</color>
+
+    <color name="like">#CCEECC</color>
+    <color name="unlike">#AAAACC</color>
 </resources>
